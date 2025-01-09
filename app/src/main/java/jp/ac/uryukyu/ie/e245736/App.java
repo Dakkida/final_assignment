@@ -9,6 +9,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Frame frame = new Frame("オセロゲーム");
+        //Frame frame = new Frame("オセロゲーム");
+        Logic logic = new Logic();
+        logic.printBoard();
     }
 }
