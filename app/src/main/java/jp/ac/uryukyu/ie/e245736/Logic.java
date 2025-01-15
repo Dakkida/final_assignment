@@ -1,12 +1,5 @@
 package jp.ac.uryukyu.ie.e245736;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class Logic {
     private int[][] board = new int[8][8];
     //0が何も乗ってなくて、１が白、２が黒
@@ -27,6 +20,7 @@ public class Logic {
     public boolean check(int a, int b, int currentPlayerColor, int currentOpponentPlayer) {
         if(board[a][b] == 0) {
             if(checkBoardEmptyAndJudge(a, b, currentPlayerColor, currentOpponentPlayer)){
+                board[a][b] = currentPlayerColor;
                 return true;
             }else{return false;}
         }else{return false;}
@@ -53,24 +47,26 @@ public class Logic {
     //ボードの盤面が空いているか確認しコマが置けるか判断する
     private boolean checkBoardEmptyAndJudge(int a, int b, int player_color, int currentOpponentPlayer) {
         //置くこま周辺上下左右斜め8つに相手のコマがあるかの確認
-        if(board[a-1][b-1] == player_color || board[a][b-1] == player_color || board[a+1][b-1] == player_color || board[a-1][b] == player_color || 
-        board[a+1][b] == player_color || board[a-1][b+1] == player_color || board[a][b+1] == player_color || board[a+1][b+1] == player_color){
+        if(board[a-1][b-1] == currentOpponentPlayer || board[a][b-1] == currentOpponentPlayer || board[a+1][b-1] == currentOpponentPlayer || board[a-1][b] == currentOpponentPlayer || 
+        board[a+1][b] == currentOpponentPlayer || board[a-1][b+1] == currentOpponentPlayer || board[a][b+1] == currentOpponentPlayer || board[a+1][b+1] == currentOpponentPlayer){
             if(checkJudge(a,b,player_color, currentOpponentPlayer)){
                 System.out.println("コマをひっくり返しました。");
                 return true;
             }
         }else{
-            System.out.printf("X座標:%d Y座標:%d にコマは置けません", a,b);
+            System.out.printf("X座標:%d Y座標:%d にコマは置けません", b+1,a+1);
             return false;
         }
-        System.out.printf("X座標:%d Y座標:%d にコマは置けません", a,b);
+        System.out.printf("X座標:%d Y座標:%d にコマは置けません", a+1,b+1);
         return false;
     }
 
     //以下ひっくり返すか確認しひっくり返す
     public boolean checkJudge(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor) {
         if(turnUp(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnDown(a, b, currentPlayerColor, currentOpponentPlayerColor) || 
-        turnLeft(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnRight(a,b,currentPlayerColor,currentOpponentPlayerColor)){
+        turnLeft(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnRight(a,b,currentPlayerColor,currentOpponentPlayerColor) || 
+        turnUpRight(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnRightDown(a,b,currentPlayerColor,currentOpponentPlayerColor) || 
+        turnLeftDown(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnUpLeft(a,b,currentPlayerColor,currentOpponentPlayerColor)){
             return true;
         }else{return false;}
     }
@@ -85,7 +81,7 @@ public class Logic {
         }
         
 
-        //現在のプレイヤーではないコマでないorマスが空ではないならループし続ける
+        //現在のプレイヤーではないコマでないandマスが空ではないならループし続ける
         while(board[targetY][b] != currentPlayerColor && board[targetY][b] != 0){
 
             //次のマスへ
@@ -98,7 +94,7 @@ public class Logic {
 
             //もし自分のコマならば
             if(board[targetY][b] == currentPlayerColor) {
-                for(; a < targetY; a--){
+                for(a = a-1; a > targetY; a--){
                     board[a][b] = currentPlayerColor; 
                 }
                 return true;
@@ -113,24 +109,24 @@ public class Logic {
         int targetY = a+1;
 
         //盤の外なら終了
-        if(targetY < 0){
+        if(targetY > 8){
             return false;
         }
 
-        //現在のプレイヤーではないコマでないorマスが空ではないならループし続ける
+        //現在のプレイヤーではないコマでないandマスが空ではないならループし続ける
         while (board[targetY][b] != currentPlayerColor && board[targetY][b] != 0) {
             
             //次のマスへ
             targetY++;
 
             //盤の外なら終了
-            if(targetY < 0){
+            if(targetY > 8){
                 break;
             }
 
             //もし自分のコマならば
             if(board[targetY][b] == currentPlayerColor) {
-                for(; a < targetY; a++){
+                for(a = a+1; a < targetY; a++){
                     board[a][b] = currentPlayerColor; 
                 }
                 return true;
@@ -145,23 +141,23 @@ public class Logic {
         int targetX = b+1;
 
         //壁の外なら
-        if(targetX < 0){
+        if(targetX > 8){
             return false;
         }
 
-        //現在のプレイヤーではないコマでないorマスが空ではないならループし続ける
+        //現在のプレイヤーではないコマでないandマスが空ではないならループし続ける
         while(board[a][targetX] != currentPlayerColor && board[a][targetX] != 0){
             //次のマスへ
             targetX++;
 
             //壁の外なら終了
-            if(targetX < 0){
+            if(targetX > 8){
                 break;
             }
 
             //もし自分のコマならば
             if(board[a][targetX] == currentPlayerColor){
-                for(; b < targetX; b++){
+                for(b = b+1; b < targetX; b++){
                     board[a][b] = currentPlayerColor;
                 }
                 return true;
@@ -181,7 +177,7 @@ public class Logic {
             return false;
         }
 
-        //現在のプレイヤーではないコマでないorマスが空ではないならループし続ける
+        //現在のプレイヤーではないコマでないandマスが空ではないならループし続ける
         while(board[a][targetX] != currentPlayerColor && board[a][targetX] != 0){
             //コマを進める
             targetX--;
@@ -193,7 +189,141 @@ public class Logic {
 
             //もし自分のコマならば
             if(board[a][targetX] == currentPlayerColor){
-                for(; b < targetX; b--){
+                for(b = b-1; b > targetX; b--){
+                    board[a][b] = currentPlayerColor;
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //右上斜め方向に相手のコマをひっくり返す
+    public boolean turnUpRight(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
+        //コマを進める
+        int targetX = b+1;
+        int targetY = a-1;
+
+        //壁の外なら
+        if(targetX > 8 || targetY < 0){
+            return false;
+        }
+
+        while(board[targetY][targetX] != currentPlayerColor && board[targetY][targetX] != 0){
+            //コマを進める
+            targetX++;
+            targetY--;
+
+            //壁の外なら
+            if(targetX > 8 || targetY < 0){
+                break;
+            }
+
+            //もし自分のコマならば
+            //斜めの移動の仕方を考える
+            if(board[targetY][targetX] == currentPlayerColor){
+                for(a = a-1; a > targetY; a--){
+                    b++;
+                    board[a][b] = currentPlayerColor;
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean turnRightDown(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor) {
+        //コマを進める
+        int targetX = b+1;
+        int targetY = a+1;
+
+        //壁の外なら
+        if(targetX > 8 || targetY > 8){
+            return false;
+        }
+
+        while(board[targetY][targetX] != currentPlayerColor && board[targetY][targetX] != 0){
+            //コマを進める
+            targetX++;
+            targetY--;
+
+            //壁の外なら
+            if(targetX > 8 || targetY > 8){
+                break;
+            }
+
+            //もし自分のコマならば
+            if(board[targetY][targetX] == currentPlayerColor){
+                for(a = a+1; a > targetY; a--){
+                    b++;
+                    board[a][b] = currentPlayerColor;
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean turnLeftDown(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
+        //コマを進める
+        int targetX = b-1;
+        int targetY = a+1;
+
+        //壁の外なら
+        if(targetX < 0 || targetY > 8){
+            return false;
+        }
+
+        while (board[targetY][targetX] != currentPlayerColor && board[targetY][targetX] != 0) {
+            //コマを進める
+            targetX--;
+            targetY++;
+
+            //壁の外なら
+            if(targetX < 0 || targetY > 8){
+                break;
+            }
+
+            //もし自分のコマなら
+            if(board[targetY][targetX] == currentPlayerColor){
+                for(a = a+1; a < targetY; a++){
+                    b--;
+                    board[a][b] = currentPlayerColor;
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean turnUpLeft(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
+        //コマを進める
+        int targetX = b-1;
+        int targetY = a-1;
+
+        //壁の外なら
+        if(targetX < 0 || targetY < 0){
+            return false;
+        }
+
+        while (board[targetY][targetX] != currentPlayerColor && board[targetY][targetX] != 0) {
+            //コマを進める
+            targetX--;
+            targetY--;
+
+            //壁の外なら
+            if(targetX < 0 || targetY < 0){
+                break;
+            }
+
+            //もし自分のコマなら
+            if(board[targetY][targetX] == currentPlayerColor){
+                for(a = a -1; a > targetY; a++){
+                    b--;
                     board[a][b] = currentPlayerColor;
                 }
                 return true;
