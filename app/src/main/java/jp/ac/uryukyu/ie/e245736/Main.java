@@ -1,10 +1,17 @@
 package jp.ac.uryukyu.ie.e245736;
 
 import java.util.Scanner;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+//memo
+//カレントディレクトリを持ってくる↓
+//cd ~/prog2/final_assignment/app/src/main/java
+//javac jp/ac/uryukyu/ie/e245736/Main.java
+//java -cp . jp.ac.uryukyu.ie.e245736.Main
 
 //0が何も乗ってなくて、１が白、２が黒
+
+/**
+    * オセロゲームを実行するためのメインクラス
+    */
 public class Main {
     public static void main(String[] args) {
         int WhitePlayer = 1;

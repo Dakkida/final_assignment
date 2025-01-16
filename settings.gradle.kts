@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = "final_assignment"
-include("app")
+include("App")

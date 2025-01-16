@@ -38,7 +38,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass.set("jp/ac/uryukyu/ie/e245736/Main")
 }
 
 tasks.named<Test>("test") {
@@ -50,4 +50,20 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "jp.ac.uryukyu.ie.e245736.Main"
     }
+}
+
+sourceSets {
+    create("custom") {
+        java.srcDirs("app/src/main/java")
+    }
+}
+
+tasks.register<JavaCompile>("compileCustomSourceSet") {
+    source = sourceSets.getByName("custom").java
+    classpath = sourceSets.getByName("main").compileClasspath
+    destinationDirectory.set(file("build/classes/custom"))
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`  // 標準入力を有効にする
 }

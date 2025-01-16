@@ -1,8 +1,16 @@
 package jp.ac.uryukyu.ie.e245736;
 
+/**
+    * オセロゲームに関する処理を実行します
+    */
+
 public class Logic {
     private int[][] board = new int[8][8];
     //0が何も乗ってなくて、１が白、２が黒
+
+    /**
+    * boardの初期設定
+    */
     public Logic(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -16,6 +24,13 @@ public class Logic {
         board[4][4] = 1;
     }
 
+    /**
+    * コマを置けるか判断します。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @return boolean
+    */
+
     //コマが置けるか確認する
     public boolean check(int a, int b, int currentPlayerColor, int currentOpponentPlayer) {
         if(board[a][b] == 0) {
@@ -25,6 +40,10 @@ public class Logic {
             }else{return false;}
         }else{return false;}
     }
+
+    /**
+    * ボードの内容を出力します
+    */
 
     public void printBoard(){
         for(int i=0; i<8; i++){
@@ -40,9 +59,14 @@ public class Logic {
         System.out.println("----------------");
     }
 
-    //if(checkJudge(a,b,player_color, currentOpponentPlayer)){
-    //  return true;
-    //}
+    /**
+    * コマをひっくり返すかを判断し、できない場合は置けない旨の出力をし、falseを返す
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
 
     //ボードの盤面が空いているか確認しコマが置けるか判断する
     private boolean checkBoardEmptyAndJudge(int a, int b, int player_color, int currentOpponentPlayer) {
@@ -61,6 +85,15 @@ public class Logic {
         return false;
     }
 
+    /**
+    * 全方向のひっくり返すかのメソッドを呼び出すメソッド
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
+
     //以下ひっくり返すか確認しひっくり返す
     public boolean checkJudge(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor) {
         if(turnUp(a,b,currentPlayerColor,currentOpponentPlayerColor) || turnDown(a, b, currentPlayerColor, currentOpponentPlayerColor) || 
@@ -70,6 +103,15 @@ public class Logic {
             return true;
         }else{return false;}
     }
+
+    /**
+    * 上をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
 
     //上方向に相手のコマをひっくり返す
     public boolean turnUp(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor) {
@@ -103,6 +145,15 @@ public class Logic {
         return false;
     }
 
+    /**
+    * 下をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
+
     //下方向に相手のコマをひっくり返す
     public boolean turnDown(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
         //次のマスへ
@@ -134,6 +185,15 @@ public class Logic {
         }
         return false;
     }
+
+    /**
+    * 右をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
 
     //右方向に相手のコマをひっくり返す
     public boolean turnRight(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
@@ -167,6 +227,15 @@ public class Logic {
         return false;
     }
 
+    /**
+    * 左をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
+
     //左方向に相手のコマをひっくり返す
     public boolean turnLeft(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
         //コマを進める
@@ -198,6 +267,15 @@ public class Logic {
 
         return false;
     }
+
+    /**
+    * 斜め右上をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
 
     //右上斜め方向に相手のコマをひっくり返す
     public boolean turnUpRight(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
@@ -234,6 +312,15 @@ public class Logic {
         return false;
     }
 
+    /**
+    * 斜め右上をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
+
     public boolean turnRightDown(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor) {
         //コマを進める
         int targetX = b+1;
@@ -267,6 +354,15 @@ public class Logic {
         return false;
     }
 
+    /**
+    * 斜め左下をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
+
     public boolean turnLeftDown(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
         //コマを進める
         int targetX = b-1;
@@ -299,6 +395,15 @@ public class Logic {
 
         return false;
     }
+
+    /**
+    * 斜め左上をコマがひっくり返り返すか判断し、可能ならひっくり返してbooleanを返す。
+    * @param a ボードのY座標
+    * @param b ボードのX座標 
+    * @param currentPlayerColor 現在のプレイヤーカラーを数字で管理
+    * @param currentOpponentPlayerColor 現在のプレイヤーの相手の数字
+    * @return boolean
+    */
 
     public boolean turnUpLeft(int a, int b, int currentPlayerColor, int currentOpponentPlayerColor){
         //コマを進める
